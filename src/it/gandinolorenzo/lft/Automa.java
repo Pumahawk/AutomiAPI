@@ -21,8 +21,6 @@ public class Automa {
 			while(!statiIntermedi.isEmpty()){
 				Stato p = statiIntermedi.remove(0);
 				transazioni.addAll(p.shift(elem));
-				if(transazioni == null)
-					continue;
 			}
 			statiIntermedi.addAll(transazioni);
 			transazioni.clear();

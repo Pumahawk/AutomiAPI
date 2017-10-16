@@ -13,7 +13,8 @@ public class LFTAutomi {
     	a.addTransizione("a", d);
     	c.addTransizione("b", d);
     	
-    	Object list = a.eClose().toArray();
+    	@SuppressWarnings("unused")
+		Object list = a.eClose().toArray();
     	
     	return;
     	
