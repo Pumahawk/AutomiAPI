@@ -28,7 +28,7 @@ public abstract class BaseEsercizio {
     	boolean check;
         for(int i = 0; sc.hasNext(); i++){
         	check = true;
-        	s = sc.next();
+        	s = sc.nextLine();
         	System.out.print(i + " Stringa: " + s + " Verificata: ");
         	if(!(check = automa.match(Arrays.asList(s.split("")))))
         		errorList.add(new ErrorBox(i, s));
