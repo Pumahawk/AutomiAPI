@@ -9,10 +9,10 @@ public class Stato{
 		Epsilon
 	}
 	
-	private static class Pair<T,D>{
+	protected static class Pair<T,D>{
 
-		private T key;
-		private D value;
+		protected T key;
+		protected D value;
 		
 		public Pair(T key, D value){
 			this.key = key;
@@ -30,6 +30,7 @@ public class Stato{
 	
     public String name;
     public List<Pair<?, Stato>> transizioni;
+    protected Automa automa;
 
     public Stato(){
     	this("");

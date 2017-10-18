@@ -6,11 +6,34 @@ import java.util.List;
 public class Automa {
 	private Stato iniziale;
 	private List<Stato> finali;
+	protected List<Object> alfabeto;
+	
+	private void linkStati(){
+		List<Stato> collegati, daCollegare;
+		collegati = new LinkedList<>();
+		daCollegare = new LinkedList<>();
+		daCollegare.add(iniziale);
+		
+		Stato p;
+		while(!daCollegare.isEmpty()) {
+			p = daCollegare.remove(0);
+			p.automa = this;
+			collegati.add(p);
+			for(Stato.Pair<?, Stato> s : p.transizioni) {
+				if(!collegati.contains(s.value))
+					daCollegare.add(s.value);
+				if(!alfabeto.contains(s.key))
+					alfabeto.add(s.key);
+			}
+		}
+	}
 
 	public Automa(Stato iniziale, List<Stato> finali) {
 		super();
 		this.iniziale = iniziale;
 		this.finali = finali;
+		this.alfabeto = new LinkedList<>();
+		linkStati();
 	}
 	
 	public <T> boolean match(List<T> stringa){
