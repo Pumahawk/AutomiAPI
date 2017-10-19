@@ -32,7 +32,7 @@ public class Esp1_8 extends BaseEsercizio{
 		q2.addTransizione("*", q3);
 
 		q3.addTransizione("a", q2);
-		q3.addTransizione("/", q0, () -> token.add("commento"));
+		q3.addTransizione("/", q0, (a) -> token.add("commento"));
 		q3.addTransizione("*", q3);
 		
 		List<Stato> finali = new LinkedList<>();
