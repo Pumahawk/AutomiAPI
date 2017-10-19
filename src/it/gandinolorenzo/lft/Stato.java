@@ -2,6 +2,7 @@ package it.gandinolorenzo.lft;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Stato{
     
@@ -13,15 +14,15 @@ public class Stato{
 
 		protected T key;
 		protected D value;
-		protected Runnable runnable;
+		protected Consumer<Object> consumer;
 
 		public Pair(T key, D value){
 			this.key = key;
 			this.value = value;
 		}
-		public Pair(T key, D value, Runnable runnable){
+		public Pair(T key, D value, Consumer<Object> consumer){
 			this(key, value);
-			this.runnable = runnable;
+			this.consumer = consumer;
 		}
 		
 		public T getKey(){
@@ -50,8 +51,8 @@ public class Stato{
         transizioni.add(new Pair<>(transazione, stato));
         return true;
     }
-    public <T> boolean addTransizione(T transazione, Stato stato, Runnable runnable){
-        transizioni.add(new Pair<>(transazione, stato, runnable));
+    public <T> boolean addTransizione(T transazione, Stato stato, Consumer<Object> consumer){
+        transizioni.add(new Pair<>(transazione, stato, consumer));
         return true;
     }
     
@@ -70,8 +71,8 @@ public class Stato{
 	        for(Pair<?, Stato> tr : p.transizioni){
 	            if(tr.getKey().equals(elemento) && !findState.contains(tr.getValue())){
 	                findState.add(tr.getValue());
-	                if(tr.runnable != null)
-	                	tr.runnable.run();
+	                if(tr.consumer != null)
+	                	tr.consumer.accept(tr.key);
 	            }
 	        }
         return findState;

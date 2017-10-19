@@ -9,7 +9,7 @@ import java.util.Set;
 import it.gandinolorenzo.lft.Stato.Pair;
 
 public class Automa {
-	private Stato iniziale;
+	public Stato iniziale;
 	private Set<Stato> finali;
 	protected Set<Object> alfabeto;
 	
