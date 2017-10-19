@@ -1,26 +1,29 @@
 package it.gandinolorenzo.lft;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 
 public class Automa {
 	private Stato iniziale;
-	private List<Stato> finali;
-	protected List<Object> alfabeto;
+	private Set<Stato> finali;
+	protected Set<Object> alfabeto;
 	
 	private void linkStati(){
-		List<Stato> collegati, daCollegare;
+		Queue<Stato> collegati, daCollegare;
 		collegati = new LinkedList<>();
 		daCollegare = new LinkedList<>();
 		daCollegare.add(iniziale);
 		
 		Stato p;
 		while(!daCollegare.isEmpty()) {
-			p = daCollegare.remove(0);
+			p = daCollegare.remove();
 			p.automa = this;
 			collegati.add(p);
 			for(Stato.Pair<?, Stato> s : p.transizioni) {
-				if(!collegati.contains(s.value))
+				if(!collegati.contains(s.value) && !daCollegare.contains(s.value))
 					daCollegare.add(s.value);
 				if(!alfabeto.contains(s.key))
 					alfabeto.add(s.key);
@@ -28,12 +31,16 @@ public class Automa {
 		}
 	}
 
-	public Automa(Stato iniziale, List<Stato> finali) {
+	public Automa(Stato iniziale, Set<Stato> finali) {
 		super();
 		this.iniziale = iniziale;
 		this.finali = finali;
-		this.alfabeto = new LinkedList<>();
+		this.alfabeto = new HashSet<>();
 		linkStati();
+	}
+	public Automa(Stato iniziale, List<Stato> finali) {
+		Set<Stato> p = new HashSet<>();
+		p.addAll(finali);
 	}
 	
 	public <T> boolean match(List<T> stringa){
