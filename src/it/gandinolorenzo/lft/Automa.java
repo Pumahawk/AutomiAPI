@@ -46,9 +46,9 @@ public class Automa {
 		linkStati();
 	}
 	
-	public <T> boolean match(List<T> stringa){
+	public <T> List<Stato> process(List<Stato> stati, List<T> stringa){
 		List<Stato> statiIntermedi = new LinkedList<>();
-		statiIntermedi.add(this.iniziale);
+		statiIntermedi.addAll(stati);
 		List<Stato> transazioni = new LinkedList<>();
 		for(T elem : stringa){
 			while(!statiIntermedi.isEmpty()){
@@ -58,7 +58,14 @@ public class Automa {
 			statiIntermedi.addAll(transazioni);
 			transazioni.clear();
 		}
-
+		
+		return statiIntermedi;
+	}
+	
+	public <T> boolean match(List<T> stringa) {
+		List<Stato> statiIntermedi = new LinkedList<>();
+		statiIntermedi.add(this.iniziale);
+		statiIntermedi = process(statiIntermedi, stringa);
 		for (Stato p : statiIntermedi) {
 			for (Stato p2 : p.eClose()) {
 				if (finali.contains(p2)) {
