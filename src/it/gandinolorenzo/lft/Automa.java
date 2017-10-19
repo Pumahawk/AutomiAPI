@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import it.gandinolorenzo.lft.Stato.Pair;
+
 public class Automa {
 	private Stato iniziale;
 	private Set<Stato> finali;
@@ -39,8 +41,9 @@ public class Automa {
 		linkStati();
 	}
 	public Automa(Stato iniziale, List<Stato> finali) {
-		Set<Stato> p = new HashSet<>();
-		p.addAll(finali);
+		this(iniziale, new HashSet<>());
+		this.finali.addAll(finali);
+		linkStati();
 	}
 	
 	public <T> boolean match(List<T> stringa){
@@ -64,6 +67,25 @@ public class Automa {
 			}
 		}
 		return false;
+	}
+	
+	public void printInfo() {
+		Set<Stato> stati = new HashSet<>();
+		List<Stato> daControllare = new LinkedList<>();
+		Stato p;
+
+		daControllare.add(this.iniziale);
+		stati.add(this.iniziale);
+		while(!daControllare.isEmpty()) {
+			p = daControllare.remove(0);
+			System.out.println("Stato: " + p.name);
+			for(Pair<?, Stato> s : p.transizioni) {
+				System.out.println("Transizione: " +s.key + " Nodo: " + s.value.name);
+				if(stati.add(s.value)) {
+					daControllare.add(s.value);
+				}
+			}
+		}
 	}
 	
 }
