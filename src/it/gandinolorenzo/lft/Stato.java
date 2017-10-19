@@ -13,10 +13,15 @@ public class Stato{
 
 		protected T key;
 		protected D value;
-		
+		protected Runnable runnable;
+
 		public Pair(T key, D value){
 			this.key = key;
 			this.value = value;
+		}
+		public Pair(T key, D value, Runnable runnable){
+			this(key, value);
+			this.runnable = runnable;
 		}
 		
 		public T getKey(){
@@ -40,9 +45,13 @@ public class Stato{
         this.name = name;
         this.transizioni = new LinkedList<>();
     }
-    
+
     public <T> boolean addTransizione(T transazione, Stato stato){
         transizioni.add(new Pair<>(transazione, stato));
+        return true;
+    }
+    public <T> boolean addTransizione(T transazione, Stato stato, Runnable runnable){
+        transizioni.add(new Pair<>(transazione, stato, runnable));
         return true;
     }
     
@@ -59,8 +68,11 @@ public class Stato{
         
         for(Stato p : eclose)
 	        for(Pair<?, Stato> tr : p.transizioni){
-	            if(tr.getKey().equals(elemento) && !findState.contains(tr.getValue()))
+	            if(tr.getKey().equals(elemento) && !findState.contains(tr.getValue())){
 	                findState.add(tr.getValue());
+	                if(tr.runnable != null)
+	                	tr.runnable.run();
+	            }
 	        }
         return findState;
         
