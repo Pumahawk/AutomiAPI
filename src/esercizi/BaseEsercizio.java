@@ -19,16 +19,21 @@ public abstract class BaseEsercizio {
 		}
 	}
 	public abstract Automa getAutoma();
+	
 	public void main(){
+		main("\n");
+	}
+	public void main(String delimeter){
 
         Automa automa = this.getAutoma();
         String s;
         Scanner sc = new Scanner(System.in);
+        sc.useDelimiter(delimeter);
         List<ErrorBox> errorList = new LinkedList<ErrorBox>();
     	boolean check;
         for(int i = 0; sc.hasNext(); i++){
         	check = true;
-        	s = sc.nextLine();
+        	s = sc.next();
         	System.out.print(i + " Stringa: " + s + " Verificata: ");
         	if(!(check = automa.match(Arrays.asList(s.split("")))))
         		errorList.add(new ErrorBox(i, s));
