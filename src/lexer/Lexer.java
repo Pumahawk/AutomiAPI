@@ -14,6 +14,7 @@ public class Lexer {
 	public BufferedReader br;
 	public List<Stato> stati = new LinkedList<>();
 	public List<Token> tokenList = new LinkedList<>();
+	public String stringa = "";
 	Token lastToken = null;
 	boolean tokenTrovato = false;
 	
@@ -22,6 +23,14 @@ public class Lexer {
 		this.br = br;
 		if(automa != null)
 			this.stati.add(automa.iniziale);
+	}
+	
+	public void updateStringa(char c) {
+		this.stringa += c;
+	}
+	
+	public void initStringa(char c)  {
+		this.stringa = "" + c;
 	}
 	
 	public void alertToken(Token t)  {
@@ -33,8 +42,12 @@ public class Lexer {
 	public Token nextToken() throws IOException {
 		this.tokenTrovato = false;
 		int c;
-		while((c = br.read()) != -1 && !this.tokenTrovato) {
+		while(!this.tokenTrovato) {
+			if((c = br.read()) == -1)
+				return null;
 			process((char)c);
+			if(this.stati.isEmpty())
+				return null;
 		}
 		if(this.tokenTrovato)
 			return this.lastToken;
