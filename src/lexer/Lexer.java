@@ -44,7 +44,6 @@ public class Lexer {
 	
 	public void process(char c) {
 		List<Character> l = new LinkedList<>();
-		System.out.println(c);
 		l.add(c);
 		this.stati = this.automa.process(this.stati, l);
 	}
