@@ -44,15 +44,13 @@ public class Lexer {
 		int c;
 		while(!this.tokenTrovato) {
 			if((c = br.read()) == -1)
-				return null;
-			process((char)c);
+				alertToken(new Token(Tag.EOF));
+			else
+				process((char)c);
 			if(this.stati.isEmpty())
 				return null;
 		}
-		if(this.tokenTrovato)
-			return this.lastToken;
-		else
-			return null;
+		return this.lastToken;
 	}
 	
 	public void process(char c) {
