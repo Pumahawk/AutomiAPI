@@ -44,7 +44,6 @@ public class UniLexer extends Lexer {
 	private Automa generateAutoma() {
 		Stato q0 = new Stato("q0");
 		Stato q1 = new Stato("q1");
-		Stato q3 = new Stato("q3");
 
 		q0.addTransizione(Pattern.SEPARATOR, q0);
 		
