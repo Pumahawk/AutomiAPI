@@ -12,7 +12,7 @@ import it.gandinolorenzo.lft.Stato;
 public class UniLexer extends Lexer {
 	
 	public static class Pattern {
-		public static final Object IGNORE = new Object() {
+		public static final Object SEPARATOR = new Object() {
 			@Override
 			public boolean equals(Object o) {
 				
@@ -25,20 +25,82 @@ public class UniLexer extends Lexer {
 			}
 		};
 	}
+	
+	private void keyToAutoma(Stato q, String key, Object endSeparator, Token t) {
+		if(key == "")
+			return;
+		char c;
+		Stato next, first = q;
+		for(int i = 0; i < key.length(); i++) {
+			c = key.charAt(i);
+			next = new Stato();
+			q.addTransizione(c, next);
+			q = next;
+		}
+		q.addTransizione(endSeparator, first, (cc) -> this.alertToken(t));
+		
+	}
 
 	private Automa generateAutoma() {
 		Stato q0 = new Stato("q0");
-		Stato q1 = new Stato("q0");
+		Stato q1 = new Stato("q1");
+		Stato q3 = new Stato("q3");
 
-		//q0.addTransizione(Pattern.IGNORE, q0);
+		q0.addTransizione(Pattern.SEPARATOR, q0);
 		
-		//Riconoscimento ! not
+		// Riconoscimento ! not
 		q0.addTransizione('!', q0, (c) -> this.alertToken(Token.not));
 		
+		// Riconoscimento ! not
+		q0.addTransizione('(', q0, (c) -> this.alertToken(Token.lpt));
+		
+		// Riconoscimento ! not
+		q0.addTransizione(')', q0, (c) -> this.alertToken(Token.rpt));
+		
+		// Riconoscimento ! not
+		q0.addTransizione('+', q0, (c) -> this.alertToken(Token.plus));
+		
+		// Riconoscimento ! not
+		q0.addTransizione('-', q0, (c) -> this.alertToken(Token.minus));
 
-		//Riconoscimento && end
+		
+		// Riconoscimento ! not
+		q0.addTransizione('*', q0, (c) -> this.alertToken(Token.mult));
+		
+		// Riconoscimento ! not
+		q0.addTransizione('/', q0, (c) -> this.alertToken(Token.div));
+		
+		// Riconoscimento ! not
+		q0.addTransizione(';', q0, (c) -> this.alertToken(Token.semicolon));
+		
+
+		// Riconoscimento && end
 		q0.addTransizione('&', q1);
 		q1.addTransizione('&', q0, (c) -> this.alertToken(Word.and));
+		
+		
+		// Riconoscimento  ||
+		q0.addTransizione('|', q1);
+		q1.addTransizione('|', q0, (c) -> this.alertToken(Word.or));
+		
+		
+		// Riconoscimento parole chiave
+		keyToAutoma(q0, "if", Pattern.SEPARATOR, Word.iftok);
+		keyToAutoma(q0, "then", Pattern.SEPARATOR, Word.then);
+		keyToAutoma(q0, "else", Pattern.SEPARATOR, Word.elsetok);
+		keyToAutoma(q0, "for", Pattern.SEPARATOR, Word.fortok);
+		keyToAutoma(q0, "do", Pattern.SEPARATOR, Word.dotok);
+		keyToAutoma(q0, "print", Pattern.SEPARATOR, Word.print);
+		keyToAutoma(q0, "read", Pattern.SEPARATOR, Word.read);
+		keyToAutoma(q0, "begin", Pattern.SEPARATOR, Word.begin);
+		keyToAutoma(q0, "end", Pattern.SEPARATOR, Word.end);
+		keyToAutoma(q0, "<", Pattern.SEPARATOR, Word.lt);
+		keyToAutoma(q0, ">", Pattern.SEPARATOR, Word.gt);
+		keyToAutoma(q0, "=", Pattern.SEPARATOR, Word.assign);
+		keyToAutoma(q0, "==", Pattern.SEPARATOR, Word.eq);
+		keyToAutoma(q0, "<=", Pattern.SEPARATOR, Word.le);
+		keyToAutoma(q0, "<>", Pattern.SEPARATOR, Word.ne);
+		keyToAutoma(q0, ">=", Pattern.SEPARATOR, Word.ge);
 		
 		List<Stato> finali = new LinkedList<>();
 		
@@ -57,12 +119,17 @@ public class UniLexer extends Lexer {
 
     public static void main(String[] args) {
     	UniLexer lexer = new UniLexer(new BufferedReader(new InputStreamReader(System.in)));
+    	Token c;
     	while(true) {
     		try {
-				System.out.println(lexer.nextToken());
+    			c = lexer.nextToken();
+    			if((c == null))
+    				break;
+				System.out.println(c);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
     	}
+    	System.out.println("Termina");
     }
 }
