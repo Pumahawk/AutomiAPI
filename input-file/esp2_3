@@ -1,0 +1,4 @@
+/* calcolare la velocita' */
+d=300;
+t=10; 
+print(d*t)
