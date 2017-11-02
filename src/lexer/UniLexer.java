@@ -63,10 +63,18 @@ public class UniLexer extends Lexer {
 		
 		// Riconoscimento ! not
 		q0.addTransizione('/', qDiv);
-		qDiv.addTransizione(Pattern.NOT_MULT, q0, (c) -> {
+		qDiv.addTransizione(Pattern.NOT_MULT_DIV, q0, (c) -> {
 			this.alertToken(Token.div);
 			addBuffer((char)c);
 		});
+		
+		//Riconoscimento commento su riga
+
+		Stato qCom = new Stato();
+		qDiv.addTransizione('/', qCom);
+		qCom.addTransizione(Pattern.NOT_NEW_LINE, qCom);
+		qCom.addTransizione('\n', q0);
+		qCom.addTransizione((char) -1, q0, (c) -> this.alertToken(new Token(Tag.EOF)));
 		
 		// Riconoscimento ! not
 		q0.addTransizione(';', q0, (c) -> this.alertToken(Token.semicolon));

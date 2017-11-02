@@ -93,7 +93,7 @@ public class Pattern {
 			return c != '/';
 		}
 	};
-	public static final Object NOT_MULT = new Object() {
+	public static final Object NOT_MULT_DIV = new Object() {
 		@Override
 		public boolean equals(Object o) {
 			char c = '.';
@@ -102,7 +102,19 @@ public class Pattern {
 			else
 				return false;
 			
-			return c != '*';
+			return c != '*' && c != '/';
+		}
+	};
+	public static final Object NOT_NEW_LINE = new Object() {
+		@Override
+		public boolean equals(Object o) {
+			char c = '.';
+			if(o.getClass().isInstance(new Character('.')))
+				c = (char) o;
+			else
+				return false;
+			
+			return c != '\n';
 		}
 	};
 }
