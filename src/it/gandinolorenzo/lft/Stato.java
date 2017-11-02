@@ -72,7 +72,7 @@ public class Stato{
 	            if(tr.getKey().equals(elemento) && !findState.contains(tr.getValue())){
 	                findState.add(tr.getValue());
 	                if(tr.consumer != null)
-	                	tr.consumer.accept(tr.key);
+	                	tr.consumer.accept(elemento);
 	            }
 	        }
         return findState;
