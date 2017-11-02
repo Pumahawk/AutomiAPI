@@ -4,12 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import it.gandinolorenzo.lft.Automa;
 import it.gandinolorenzo.lft.Stato;
 
 public class Lexer {
 	
+	private boolean eof = false;;
 	public Automa automa;
 	public BufferedReader br;
 	public List<Stato> stati = new LinkedList<>();
@@ -17,6 +19,7 @@ public class Lexer {
 	public String stringa = "";
 	Token lastToken = null;
 	boolean tokenTrovato = false;
+	private Queue<Character> buffer = new LinkedList<>();
 	
 	public Lexer(Automa automa, BufferedReader br) {
 		this.automa = automa;
@@ -43,7 +46,15 @@ public class Lexer {
 		this.tokenTrovato = false;
 		int c;
 		while(!this.tokenTrovato) {
-			c = br.read();
+			if(buffer.isEmpty())
+				c = br.read();
+			else 
+				c = buffer.remove();
+			if(c == -1)
+				if(eof)
+					return null;
+				else
+					eof = true;
 			process((char)c);
 			if(this.stati.isEmpty())
 				return null;
@@ -55,8 +66,23 @@ public class Lexer {
 		List<Character> l = new LinkedList<>();
 		l.add(c);
 		this.stati = this.automa.process(this.stati, l);
+		removeDuplicateStati();
 	}
 	
+	public void removeDuplicateStati() {
+		List<Stato> l = new LinkedList<>();
+		
+		for(Stato s : this.stati) {
+			if(!l.contains(s)) {
+				l.add(s);
+			}
+		}
+		this.stati = l;
+	}
+	
+	public void addBuffer(char c) {
+		buffer.add(c);
+	}
 	
 	
 	

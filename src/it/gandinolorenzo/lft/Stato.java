@@ -71,7 +71,7 @@ public class Stato{
 	        for(Pair<?, Stato> tr : p.transizioni){
 	            if(tr.getKey().equals(elemento) && !findState.contains(tr.getValue())){
 	                findState.add(tr.getValue());
-	                if(tr.consumer != null)
+	                if(tr.consumer != null && elemento != Costanti.Epsilon)
 	                	tr.consumer.accept(elemento);
 	            }
 	        }

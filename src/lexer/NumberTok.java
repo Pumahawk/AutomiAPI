@@ -12,7 +12,7 @@ public class NumberTok extends Token {
 	
 	public String toString() {
 		String s = "<";
-		s += this.tag + ",";
+		s += this.tag + ", ";
 		s += this.value + ">";
 		return s;
 	}
