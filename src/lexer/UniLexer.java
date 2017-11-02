@@ -1,10 +1,6 @@
 package lexer;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,44 +10,6 @@ import it.gandinolorenzo.lft.Stato;
 public class UniLexer extends Lexer {
 	
 	private String contenitoreNumero = "";
-	
-	public static class Pattern {
-		public static final Object SEPARATOR = new Object() {
-			@Override
-			public boolean equals(Object o) {
-				
-				return (
-						o.equals(' ') || 
-						o.equals('\n')|| 
-						o.equals('\t')|| 
-						o.equals('\r')
-				);
-			}
-		};
-		public static final Object NUMBER = new Object() {
-			@Override
-			public boolean equals(Object o) {
-				char c = '.';
-				if(o.getClass().isInstance(new Character('.')))
-					c = (char) o;
-				else
-					return false;
-				
-				return ('0' <= c && c <= '9');
-			}
-		};
-		public static final Object NOT_NUMBER = new Object() {
-			@Override
-			public boolean equals(Object o) {
-				char c = '.';
-				if(o.getClass().isInstance(new Character('.')))
-					c = (char) o;
-				else
-					return false;
-				return (!NUMBER.equals(o));
-			}
-		};
-	}
 	
 	private void keyToAutoma(Stato q, String key, Object endSeparator, Token t) {
 		if(key == "")
@@ -158,32 +116,4 @@ public class UniLexer extends Lexer {
 		this.stati.add(a.iniziale);
 	}
 
-    public static void main(String[] args) throws FileNotFoundException {
-    	boolean status = true;
-    	//BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-    	BufferedReader in = new BufferedReader(new FileReader(new File("input-file/lexer-test.pers")));
-    	
-    	UniLexer lexer = new UniLexer(in);
-    	Token c = new Token(0);
-    	while(c.tag != Tag.EOF) {
-    		try {
-    			c = lexer.nextToken();
-    			if((c == null)) {
-    				status = false;
-    				break;
-    			}
-				System.out.println(c);
-    			if((c.tag == Tag.EOF))
-    				break;
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-    	}
-    	if(status) {
-        	System.out.println("Terminazione corretta");
-    	}
-    	else
-
-        	System.out.println("Terminazione errata");
-    }
 }
