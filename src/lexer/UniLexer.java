@@ -93,6 +93,10 @@ public class UniLexer extends Lexer {
 		keyWords.put("begin", Word.begin);
 		keyWords.put("end", Word.end);
 		/*
+		 * 
+		 * Parte sostitita dalla lista contente tutte le parole chiavi
+		 * 
+		 * 
 		keyToAutoma(q0, "if", Pattern.SEPARATOR, Word.iftok);
 		keyToAutoma(q0, "then", Pattern.SEPARATOR, Word.then);
 		keyToAutoma(q0, "else", Pattern.SEPARATOR, Word.elsetok);
