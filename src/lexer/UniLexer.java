@@ -13,6 +13,8 @@ import it.gandinolorenzo.lft.Stato;
 
 public class UniLexer extends Lexer {
 	
+	private String contenitoreNumero = "";
+	
 	public static class Pattern {
 		public static final Object SEPARATOR = new Object() {
 			@Override
@@ -24,6 +26,29 @@ public class UniLexer extends Lexer {
 						o.equals('\t')|| 
 						o.equals('\r')
 				);
+			}
+		};
+		public static final Object NUMBER = new Object() {
+			@Override
+			public boolean equals(Object o) {
+				char c = '.';
+				if(o.getClass().isInstance(new Character('.')))
+					c = (char) o;
+				else
+					return false;
+				
+				return ('0' <= c && c <= '9');
+			}
+		};
+		public static final Object NOT_NUMBER = new Object() {
+			@Override
+			public boolean equals(Object o) {
+				char c = '.';
+				if(o.getClass().isInstance(new Character('.')))
+					c = (char) o;
+				else
+					return false;
+				return (!NUMBER.equals(o));
 			}
 		};
 	}
@@ -46,12 +71,13 @@ public class UniLexer extends Lexer {
 	private Automa generateAutoma() {
 		Stato q0 = new Stato("q0");
 		Stato q1 = new Stato("q1");
+		Stato q2 = new Stato("q2: Inizio riconoscimento numero");
 
 		q0.addTransizione(Pattern.SEPARATOR, q0);
 
 		// Riconoscimento EOF
 		q0.addTransizione((char) -1, q0, (c) -> this.alertToken(new Token(Tag.EOF)));
-		
+
 		// Riconoscimento ! not
 		q0.addTransizione('!', q0, (c) -> this.alertToken(Token.not));
 		
@@ -105,6 +131,17 @@ public class UniLexer extends Lexer {
 		keyToAutoma(q0, "<=", Pattern.SEPARATOR, Word.le);
 		keyToAutoma(q0, "<>", Pattern.SEPARATOR, Word.ne);
 		keyToAutoma(q0, ">=", Pattern.SEPARATOR, Word.ge);
+		
+		//Riconoscimento numero
+
+
+		q0.addTransizione(Pattern.NUMBER, q2, (c) ->	contenitoreNumero += c);
+		q2.addTransizione(Pattern.NUMBER, q2, (c) ->	contenitoreNumero += c);
+		
+		q2.addTransizione(Pattern.SEPARATOR, q0, (c) -> {
+			this.alertToken(new NumberTok(Integer.parseInt(contenitoreNumero)));
+			contenitoreNumero = "";
+		});
 		
 		List<Stato> finali = new LinkedList<>();
 		
