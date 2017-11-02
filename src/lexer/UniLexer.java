@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,6 +48,9 @@ public class UniLexer extends Lexer {
 		Stato q1 = new Stato("q1");
 
 		q0.addTransizione(Pattern.SEPARATOR, q0);
+
+		// Riconoscimento EOF
+		q0.addTransizione((char) -1, q0, (c) -> this.alertToken(new Token(Tag.EOF)));
 		
 		// Riconoscimento ! not
 		q0.addTransizione('!', q0, (c) -> this.alertToken(Token.not));
@@ -120,6 +122,7 @@ public class UniLexer extends Lexer {
 	}
 
     public static void main(String[] args) throws FileNotFoundException {
+    	boolean status = true;
     	//BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     	BufferedReader in = new BufferedReader(new FileReader(new File("input-file/lexer-test.pers")));
     	
@@ -128,13 +131,22 @@ public class UniLexer extends Lexer {
     	while(c.tag != Tag.EOF) {
     		try {
     			c = lexer.nextToken();
-    			if((c == null))
+    			if((c == null)) {
+    				status = false;
     				break;
+    			}
 				System.out.println(c);
+    			if((c.tag == Tag.EOF))
+    				break;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
     	}
-    	System.out.println("Termina");
+    	if(status) {
+        	System.out.println("Terminazione corretta");
+    	}
+    	else
+
+        	System.out.println("Terminazione errata");
     }
 }

@@ -43,10 +43,8 @@ public class Lexer {
 		this.tokenTrovato = false;
 		int c;
 		while(!this.tokenTrovato) {
-			if((c = br.read()) == -1)
-				alertToken(new Token(Tag.EOF));
-			else
-				process((char)c);
+			c = br.read();
+			process((char)c);
 			if(this.stati.isEmpty())
 				return null;
 		}
