@@ -1,5 +1,8 @@
 package esercizi;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class Es1_8 extends BaseEsercizio{
 		q0.addTransizione("/", q1);
 		q0.addTransizione("*", q0);
 
-		q0.addTransizione("a", q0);
+		q1.addTransizione("a", q0);
 		q1.addTransizione("/", q1);
 		q1.addTransizione("*", q2);
 
@@ -41,8 +44,8 @@ public class Es1_8 extends BaseEsercizio{
 		return automa;
 	}
 
-    public static void main(String[] args) {
-    	new Es1_8().main();
+    public static void main(String[] args) throws FileNotFoundException {
+    	new Es1_8().main(new FileInputStream(new File("input-file/es1_8")));
     }
 
 }

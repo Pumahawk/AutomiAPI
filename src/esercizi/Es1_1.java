@@ -1,5 +1,8 @@
 package esercizi;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -50,8 +53,8 @@ public class Es1_1 extends BaseEsercizio{
         return automa;
 	}
     
-    public static void main(String[] args) {
-    	new Es1_1().main();
+    public static void main(String[] args) throws FileNotFoundException {
+    	new Es1_1().main(new FileInputStream(new File("input-file/es1_1")));
     }
 
 }

@@ -1,5 +1,6 @@
 package esercizi;
 
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,15 +20,22 @@ public abstract class BaseEsercizio {
 		}
 	}
 	public abstract Automa getAutoma();
-	
+
 	public void main(){
 		main("\n");
 	}
-	public void main(String delimeter){
+	public void main(InputStream in){
+		main("\n", in);
+	}
+	
+	public void main(String delimeter) {
+		main(delimeter, System.in);
+	}
+	public void main(String delimeter, InputStream r){
 
         Automa automa = this.getAutoma();
         String s;
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(r);
         sc.useDelimiter(delimeter);
         List<ErrorBox> errorList = new LinkedList<ErrorBox>();
     	boolean check;
