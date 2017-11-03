@@ -199,7 +199,6 @@ public class UniLexer extends Lexer {
 		
 		q0.addTransizione('/', c1);
 
-		c1.addTransizione('/', c1);
 		c1.addTransizione('*', c2);
 
 		c2.addTransizione(Pattern.NOT_COM_PAT, c2);
