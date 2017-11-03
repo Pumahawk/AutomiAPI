@@ -34,7 +34,7 @@ public class Pattern {
 	public static final Object NON_IDENTIFICATORE = new Checker((o) ->  
 		!('a' <= o && o <= 'z') && 
 		!('A' <= o &&	o <= 'Z') && 
-		!o.equals('_') && !LETTER.equals(o)
+		!o.equals('_') && !NUMBER.equals(o)
 	);
 	public static final Object NOT_EQ = new Checker((o) -> o != '=');
 	public static final Object NOT_COM_PAT = new Checker((o) ->  o != '/' && o != '*');
