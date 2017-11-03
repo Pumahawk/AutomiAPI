@@ -7,12 +7,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class ProjectLexer {
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void execute(Lexer lexer)  throws FileNotFoundException {
     	boolean status = true;
-    	//BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-    	BufferedReader in = new BufferedReader(new FileReader(new File("input-file/lexer-test.pers")));
-    	
-    	UniLexer lexer = new UniLexer(in);
     	Token c = new Token(0);
     	while(c.tag != Tag.EOF) {
     		try {
@@ -34,5 +30,9 @@ public class ProjectLexer {
     	else
 
         	System.out.println("Terminazione errata");
+		
+	}
+	public static void main(String[] args) throws FileNotFoundException {
+		execute(new UniLexer(new BufferedReader(new FileReader(new File("input-file/lexer-test.pers")))));
     }
 }
