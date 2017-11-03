@@ -35,11 +35,15 @@ public class Lexer {
 	public void initStringa(char c)  {
 		this.stringa = "" + c;
 	}
-	
+
 	public void alertToken(Token t)  {
 		tokenList.add(t);
 		lastToken = t;
 		tokenTrovato = true;
+	}
+	public void alertToken(Token t, char buffer)  {
+		addBuffer(buffer);
+		alertToken(t);
 	}
 	
 	public Token nextToken() throws IOException {

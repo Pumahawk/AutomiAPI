@@ -27,7 +27,7 @@ public class UniLexer extends Lexer {
 			q.addTransizione(c, next);
 			q = next;
 		}
-		q.addTransizione(endSeparator, first, (cc) -> {addBuffer((char) cc);this.alertToken(t);});
+		q.addTransizione(endSeparator, first, (cc) -> this.alertToken(t, (char)cc));
 		
 	}
 
@@ -45,50 +45,80 @@ public class UniLexer extends Lexer {
 		// Riconoscimento ! not
 		q0.addTransizione('!', q0, (c) -> this.alertToken(Token.not));
 		
-		// Riconoscimento ! not
+		// Riconoscimento ( not
 		q0.addTransizione('(', q0, (c) -> this.alertToken(Token.lpt));
 		
-		// Riconoscimento ! not
+		// Riconoscimento ) not
 		q0.addTransizione(')', q0, (c) -> this.alertToken(Token.rpt));
 		
-		// Riconoscimento ! not
+		// Riconoscimento + not
 		q0.addTransizione('+', q0, (c) -> this.alertToken(Token.plus));
 		
-		// Riconoscimento ! not
+		// Riconoscimento - not
 		q0.addTransizione('-', q0, (c) -> this.alertToken(Token.minus));
 
 		
-		// Riconoscimento ! not
+		// Riconoscimento * not
 		q0.addTransizione('*', q0, (c) -> this.alertToken(Token.mult));
 		
-		// Riconoscimento ! not
+		// Riconoscimento / not
 		q0.addTransizione('/', qDiv);
-		qDiv.addTransizione(Pattern.NOT_MULT_DIV, q0, (c) -> {
-			this.alertToken(Token.div);
-			addBuffer((char)c);
-		});
+		qDiv.addTransizione(Pattern.NOT_MULT_DIV, q0, (c) -> this.alertToken(Token.div, (char) c));
 		
 		//Riconoscimento commento su riga
-
-		Stato qCom = new Stato();
-		qDiv.addTransizione('/', qCom);
-		qCom.addTransizione(Pattern.NOT_NEW_LINE, qCom);
-		qCom.addTransizione('\n', q0);
-		qCom.addTransizione((char) -1, q0, (c) -> this.alertToken(new Token(Tag.EOF)));
+		{
+			Stato qCom = new Stato();
+			qDiv.addTransizione('/', qCom);
+			qCom.addTransizione(Pattern.NOT_NEW_LINE, qCom);
+			qCom.addTransizione('\n', q0);
+			qCom.addTransizione((char) -1, q0, (c) -> this.alertToken(new Token(Tag.EOF)));
+		}
 		
-		// Riconoscimento ! not
+		// Riconoscimento ; not
 		q0.addTransizione(';', q0, (c) -> this.alertToken(Token.semicolon));
 		
 
 		// Riconoscimento && end
-		q0.addTransizione('&', q1);
-		q1.addTransizione('&', q0, (c) -> this.alertToken(Word.and));
-		
+		{
+			Stato andS = new Stato();
+			q0.addTransizione('&', andS);
+			andS.addTransizione('&', q0, (c) -> this.alertToken(Word.and));
+		}
+
 		
 		// Riconoscimento  ||
-		q0.addTransizione('|', q1);
-		q1.addTransizione('|', q0, (c) -> this.alertToken(Word.or));
+		{
+			Stato orS = new Stato();
+			q0.addTransizione('|', orS);
+			orS.addTransizione('|', q0, (c) -> this.alertToken(Word.or));
+		}
 		
+		
+		// Riconoscimento  <, <>, <=
+		{
+			Stato notEq = new Stato();
+			q0.addTransizione('<', notEq);
+			notEq.addTransizione(Pattern.NOT_MAX_EQ, q0, (c) -> this.alertToken(Word.minus, (char)c));
+			notEq.addTransizione('>', q0, (c) -> this.alertToken(Word.ne));
+			notEq.addTransizione('=', q0, (c) -> this.alertToken(Word.le));
+		}
+
+		// Riconoscimento =, ==
+		{
+			Stato eqS = new Stato();
+			q0.addTransizione('=', eqS);
+			eqS.addTransizione(Pattern.NOT_EQ, q0, (c) -> this.alertToken(Word.assign, (char)c));
+			eqS.addTransizione('=', q0, (c) -> this.alertToken(Word.eq));
+		}
+		
+		// Riconoscimento >, >=
+
+		{
+			Stato maxS = new Stato();
+			q0.addTransizione('>', maxS);
+			maxS.addTransizione(Pattern.NOT_EQ, q0, (c) -> this.alertToken(Word.gt, (char)c));
+			maxS.addTransizione('=', q0, (c) -> this.alertToken(Word.ge));
+		}
 		
 		// Riconoscimento parole chiave
 		keyWords.put("if", Word.iftok);
@@ -114,7 +144,6 @@ public class UniLexer extends Lexer {
 		keyToAutoma(q0, "read", Pattern.SEPARATOR, Word.read);
 		keyToAutoma(q0, "begin", Pattern.SEPARATOR, Word.begin);
 		keyToAutoma(q0, "end", Pattern.SEPARATOR, Word.end);
-		*/
 		keyToAutoma(q0, "<", Pattern.SEPARATOR, Word.lt);
 		keyToAutoma(q0, ">", Pattern.SEPARATOR, Word.gt);
 		keyToAutoma(q0, "=", Pattern.NOT_EQ, Word.assign);
@@ -122,6 +151,7 @@ public class UniLexer extends Lexer {
 		keyToAutoma(q0, "<=", Pattern.SEPARATOR, Word.le);
 		keyToAutoma(q0, "<>", Pattern.SEPARATOR, Word.ne);
 		keyToAutoma(q0, ">=", Pattern.SEPARATOR, Word.ge);
+		*/
 		
 		// Fine iconoscimento parole chiave
 		
@@ -132,8 +162,7 @@ public class UniLexer extends Lexer {
 		q2.addTransizione(Pattern.NUMBER, q2, (c) -> contenitoreNumero += c);
 		
 		q2.addTransizione(Pattern.NOT_NUMBER, q0, (c) -> {
-			this.alertToken(new NumberTok(Integer.parseInt(contenitoreNumero)));
-			addBuffer((char)c);
+			this.alertToken(new NumberTok(Integer.parseInt(contenitoreNumero)), (char) c);
 			contenitoreNumero = "";
 		});
 
