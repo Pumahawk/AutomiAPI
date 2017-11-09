@@ -8,6 +8,7 @@ import java.util.Queue;
 
 import it.gandinolorenzo.lft.Automa;
 import it.gandinolorenzo.lft.Stato;
+import it.gandinolorenzo.lft.Stato.Pair;
 
 public class Lexer {
 	
@@ -18,6 +19,7 @@ public class Lexer {
 	public List<Token> tokenList = new LinkedList<>();
 	public String stringa = "";
 	Token lastToken = null;
+	private int lastChar;
 	boolean tokenTrovato = false;
 	private Queue<Character> buffer = new LinkedList<>();
 	int lineCounter = 0;
@@ -57,9 +59,17 @@ public class Lexer {
 				c = br.read();
 			else 
 				c = buffer.remove();
+			this.lastChar = c;
 			if(c == -1)
-				if(eof)
-					return null;
+				if(eof) {
+					List<Object> pDisp = new LinkedList<>();
+					for(Stato s : oldS) {
+						for(Pair<?, Stato> o : s.transizioni) {
+							pDisp.add(o.getKey());
+						}
+					}
+					throw new LexerException(this.lineCounter, c, pDisp);
+				}
 				else
 					eof = true;
 			if(c == '\n')
@@ -68,8 +78,8 @@ public class Lexer {
 			if(this.stati.isEmpty()) {
 				List<Object> pDisp = new LinkedList<>();
 				for(Stato s : oldS) {
-					for(Object o : s.transizioni) {
-						pDisp.add(o);
+					for(Pair<?, Stato> o : s.transizioni) {
+						pDisp.add(o.getKey());
 					}
 				}
 				throw new LexerException(this.lineCounter, c, pDisp);
@@ -98,6 +108,14 @@ public class Lexer {
 	
 	public void addBuffer(char c) {
 		buffer.add(c);
+	}
+
+	public int getLastChar() {
+		return this.lastChar;
+	}
+	
+	public int getLineCounter() {
+		return this.lineCounter;
 	}
 	
 	

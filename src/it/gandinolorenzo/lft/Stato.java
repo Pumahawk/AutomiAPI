@@ -10,7 +10,7 @@ public class Stato{
 		Epsilon
 	}
 	
-	protected static class Pair<T,D>{
+	public static class Pair<T,D>{
 
 		protected T key;
 		protected D value;
