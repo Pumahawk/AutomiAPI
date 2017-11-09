@@ -10,6 +10,14 @@ public class Token {
 	public String toString() {
 		return "<" + tag + ">";
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(!o.getClass().isInstance(this))
+			return false;
+		Token t = (Token) o;
+		return t.tag == this.tag;
+	}
 
 	public static final Token
 		not = new Token('!'),

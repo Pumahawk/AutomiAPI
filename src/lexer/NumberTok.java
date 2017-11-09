@@ -8,7 +8,14 @@ public class NumberTok extends Token {
 		super(Tag.NUM);
 		this.value = number;
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if(!super.equals(o))
+			return false;
+		NumberTok t = (NumberTok) o;
+		return t.value == this.value;
+	}
 	
 	public String toString() {
 		String s = "<";

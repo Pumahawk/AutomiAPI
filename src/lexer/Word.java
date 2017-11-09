@@ -8,6 +8,14 @@ public class Word extends Token {
 		lexeme = s;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if(!super.equals(o))
+			return false;
+		Word t = (Word) o;
+		return t.lexeme.equals(this.lexeme);
+	}
+	
 	public String toString() { return "<" + tag + ", " + lexeme + ">"; }
 	public static final Word
 		iftok = new Word(Tag.IF, "if"),
