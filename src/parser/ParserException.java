@@ -1,8 +1,5 @@
 package parser;
 
-import java.util.List;
-
-import lexer.Tag;
 import lexer.Token;
 
 public class ParserException extends RuntimeException {

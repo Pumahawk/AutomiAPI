@@ -1,9 +1,6 @@
 package parser;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-
 import lexer.Tag;
 import lexer.Token;
 import lexer.UniLexer;
