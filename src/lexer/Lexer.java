@@ -20,6 +20,7 @@ public class Lexer {
 	Token lastToken = null;
 	boolean tokenTrovato = false;
 	private Queue<Character> buffer = new LinkedList<>();
+	int lineCounter = 0;
 	
 	public Lexer(Automa automa, BufferedReader br) {
 		this.automa = automa;
@@ -49,6 +50,8 @@ public class Lexer {
 	public Token nextToken() throws IOException {
 		this.tokenTrovato = false;
 		int c;
+		List<Stato> oldS = new LinkedList<>();
+		oldS.addAll(this.stati);
 		while(!this.tokenTrovato) {
 			if(buffer.isEmpty())
 				c = br.read();
@@ -59,9 +62,18 @@ public class Lexer {
 					return null;
 				else
 					eof = true;
+			if(c == '\n')
+				lineCounter++;
 			process((char)c);
-			if(this.stati.isEmpty())
-				return null;
+			if(this.stati.isEmpty()) {
+				List<Object> pDisp = new LinkedList<>();
+				for(Stato s : oldS) {
+					for(Object o : s.transizioni) {
+						pDisp.add(o);
+					}
+				}
+				throw new LexerException(this.lineCounter, c, pDisp);
+			}
 		}
 		return this.lastToken;
 	}
