@@ -14,7 +14,7 @@ public class UniParser {
 		this.lexer = lexer;
 	}
 	
-	public void start() throws IOException, LexerException {
+	public void start() throws IOException, LexerException, ParserException {
 		this.t = lexer.nextToken();
 		
 		if(t.tag != Tag.EOF) {
@@ -26,10 +26,10 @@ public class UniParser {
 			throw new ParserException(lexer.getLineCounter(), this.t, avT);
 		}
 	}
-	protected void expr() throws IOException, LexerException {
+	protected void expr() throws IOException, LexerException, ParserException {
 		term();exprp();
 	}
-	public void exprp() throws IOException, LexerException {
+	public void exprp() throws IOException, LexerException, ParserException {
 		if(t.tag == Token.plus.tag) {
 			this.t = lexer.nextToken();
 			term();exprp();
@@ -38,10 +38,10 @@ public class UniParser {
 			term();exprp();
 		}
 	}
-	protected void term() throws IOException, LexerException {
+	protected void term() throws IOException, LexerException, ParserException {
 		fact();termp();
 	}
-	protected void termp() throws IOException, LexerException {
+	protected void termp() throws IOException, LexerException, ParserException {
 		if(t.tag == Token.mult.tag) {
 			this.t = lexer.nextToken();
 			fact();termp();
@@ -50,7 +50,7 @@ public class UniParser {
 			fact();termp();
 		}
 	}
-	protected void fact() throws IOException, LexerException {
+	protected void fact() throws IOException, LexerException, ParserException {
 		if(t.tag == Token.lpt.tag) {
 			this.t = lexer.nextToken();
 			expr();

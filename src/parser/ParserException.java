@@ -2,7 +2,7 @@ package parser;
 
 import lexer.Token;
 
-public class ParserException extends RuntimeException {
+public class ParserException extends Exception {
 	private static final long serialVersionUID = 1L;
 	public final int line;
 	public final Token token;
