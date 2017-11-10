@@ -58,6 +58,8 @@ public class UniParser {
 				Token[] avT = {Token.rpt};
 				throw new ParserException(lexer.getLineCounter(), this.t, avT);
 			}
+			else
+				this.t = lexer.nextToken();
 		} else if(t.tag == Tag.NUM) {
 			this.t = lexer.nextToken();
 		}
