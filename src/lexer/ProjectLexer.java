@@ -9,10 +9,16 @@ import java.io.IOException;
 public class ProjectLexer {
 	public static void execute(Lexer lexer)  throws FileNotFoundException {
     	boolean status = true;
+    	LexerException error = null;
     	Token c = new Token(0);
     	while(c.tag != Tag.EOF) {
     		try {
-    			c = lexer.nextToken();
+    			try {
+					c = lexer.nextToken();
+				} catch (LexerException e) {
+					error = e;
+					c = null;
+				}
     			if((c == null)) {
     				status = false;
     				break;
@@ -27,9 +33,10 @@ public class ProjectLexer {
     	if(status) {
         	System.out.println("Terminazione corretta");
     	}
-    	else
-
+    	else {
         	System.out.println("Terminazione errata");
+        	error.printLexerError();
+    	}
 		
 	}
 	public static void main(String[] args) throws FileNotFoundException {

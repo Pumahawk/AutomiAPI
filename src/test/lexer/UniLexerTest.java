@@ -9,6 +9,7 @@ import java.io.StringReader;
 import org.junit.jupiter.api.Test;
 
 import lexer.Lexer;
+import lexer.LexerException;
 import lexer.NumberTok;
 import lexer.Tag;
 import lexer.Token;
@@ -23,7 +24,7 @@ public class UniLexerTest {
 	}
 	
 	@Test
-	public void rapidTest() throws IOException {
+	public void rapidTest() throws IOException, LexerException {
 		String s = "ciao 120 ";
 		BufferedReader in = new BufferedReader(new StringReader(s));
 		Lexer lexer = new UniLexer(in);

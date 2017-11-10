@@ -49,7 +49,7 @@ public class Lexer {
 		alertToken(t);
 	}
 	
-	public Token nextToken() throws IOException {
+	public Token nextToken() throws IOException, LexerException {
 		this.tokenTrovato = false;
 		int c;
 		List<Stato> oldS = new LinkedList<>();

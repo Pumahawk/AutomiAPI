@@ -17,12 +17,7 @@ public class UniParserTest {
 		try {
 			p.start();
 		} catch(LexerException e) {
-			System.err.println("Rilevato un errore durante l'analisi lessicale.");
-			System.err.println("Errore alla riga: " + (e.line + 1));
-			System.err.println("Carattere rilevato: " + e.character);
-			System.err.println("Caratteri accettati: ");
-			for(Object o : e.avaiableCharacter)
-				System.err.print(o + " ");
+			e.printLexerError();
 		} catch(ParserException e) {
 			System.err.println("Rilevato un errore durante l'analisi sintattica.");
 			System.err.println("Errore alla riga: " + (e.line + 1));

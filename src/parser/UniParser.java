@@ -1,6 +1,8 @@
 package parser;
 
 import java.io.IOException;
+
+import lexer.LexerException;
 import lexer.Tag;
 import lexer.Token;
 import lexer.UniLexer;
@@ -12,7 +14,7 @@ public class UniParser {
 		this.lexer = lexer;
 	}
 	
-	public void start() throws IOException {
+	public void start() throws IOException, LexerException {
 		this.t = lexer.nextToken();
 		
 		if(t.tag != Tag.EOF) {
@@ -24,10 +26,10 @@ public class UniParser {
 			throw new ParserException(lexer.getLineCounter(), this.t, avT);
 		}
 	}
-	protected void expr() throws IOException {
+	protected void expr() throws IOException, LexerException {
 		term();exprp();
 	}
-	public void exprp() throws IOException {
+	public void exprp() throws IOException, LexerException {
 		if(t.tag == Token.plus.tag) {
 			this.t = lexer.nextToken();
 			term();exprp();
@@ -36,10 +38,10 @@ public class UniParser {
 			term();exprp();
 		}
 	}
-	protected void term() throws IOException {
+	protected void term() throws IOException, LexerException {
 		fact();termp();
 	}
-	protected void termp() throws IOException {
+	protected void termp() throws IOException, LexerException {
 		if(t.tag == Token.mult.tag) {
 			this.t = lexer.nextToken();
 			fact();termp();
@@ -48,7 +50,7 @@ public class UniParser {
 			fact();termp();
 		}
 	}
-	protected void fact() throws IOException {
+	protected void fact() throws IOException, LexerException {
 		if(t.tag == Token.lpt.tag) {
 			this.t = lexer.nextToken();
 			expr();
