@@ -7,7 +7,7 @@ import lexer.Tag;
 import lexer.Token;
 import lexer.UniLexer;
 
-public class UniParser {
+public class UniParser implements Parser{
 	public final UniLexer lexer;
 	private Token t;
 	public UniParser(UniLexer lexer) {
