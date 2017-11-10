@@ -62,12 +62,7 @@ public class Lexer {
 			this.lastChar = c;
 			if(c == -1)
 				if(eof) {
-					List<Object> pDisp = new LinkedList<>();
-					for(Stato s : oldS) {
-						for(Pair<?, Stato> o : s.transizioni) {
-							pDisp.add(o.getKey());
-						}
-					}
+					Object[] pDisp = {Pattern.NOT_EOF};
 					throw new LexerException(this.lineCounter, c, pDisp);
 				}
 				else
@@ -82,7 +77,7 @@ public class Lexer {
 						pDisp.add(o.getKey());
 					}
 				}
-				throw new LexerException(this.lineCounter, c, pDisp);
+				throw new LexerException(this.lineCounter, c, pDisp.toArray());
 			}
 		}
 		return this.lastToken;

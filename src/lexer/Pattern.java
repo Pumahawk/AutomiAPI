@@ -42,6 +42,7 @@ public class Pattern {
 		!('A' <= o &&	o <= 'Z') && 
 		!o.equals('_') && !NUMBER.equals(o)
 	);
+	public static final Object NOT_EOF = new Checker("NOT_EOF", (o) -> o != (char)-1);
 	public static final Object NOT_EQ = new Checker("NOT_EQ", (o) -> o != '=');
 	public static final Object NOT_COM_PAT = new Checker("NOT_COM_PAT", (o) ->  o != '/' && o != '*');
 	public static final Object NOT_DIV = new Checker("NOT_DIV", (o) ->  o != '/');
