@@ -19,12 +19,7 @@ public class UniParserTest {
 		} catch(LexerException e) {
 			e.printLexerError();
 		} catch(ParserException e) {
-			System.err.println("Rilevato un errore durante l'analisi sintattica.");
-			System.err.println("Errore alla riga: " + (e.line + 1));
-			System.err.println("Token rilevato: " + e.token);
-			System.err.println("Token accettati: ");
-			for(Object o : e.avaiableTok)
-				System.err.print(o + " ");
+			e.printParserError();
 		}
 	}
 }

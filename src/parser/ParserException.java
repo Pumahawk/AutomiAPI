@@ -13,4 +13,12 @@ public class ParserException extends Exception {
 		this.token = tok;
 		this.avaiableTok = avaiableTok;
 	}
+	public void printParserError() {
+		System.err.println("Rilevato un errore durante l'analisi sintattica.");
+		System.err.println("Errore alla riga: " + (this.line + 1));
+		System.err.println("Token rilevato: " + this.token);
+		System.err.println("Token accettati: ");
+		for(Object o : this.avaiableTok)
+			System.err.print(o + " ");
+	}
 }
