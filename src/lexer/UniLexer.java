@@ -30,8 +30,9 @@ public class UniLexer extends Lexer {
 		q.addTransizione(endSeparator, first, (cc) -> this.alertToken(t, (char)cc));
 		
 	}
-
-	private Automa generateAutoma() {
+	
+	public UniLexer(BufferedReader br) {
+		super(br);
 		Stato q0 = new Stato("q0");
 		Stato q1 = new Stato("q1");
 		Stato q2 = new Stato("q2: Inizio riconoscimento numero");
@@ -214,13 +215,7 @@ public class UniLexer extends Lexer {
 		
 		finali.add(q0);
 		
-		Automa automa = new Automa(q0, finali);
-		
-		return automa;
-	}
-	public UniLexer(BufferedReader br) {
-		super(null, br);
-		Automa a = generateAutoma();
+		Automa a = new Automa(q0, finali);
 		this.automa = a;
 		this.stati.add(a.iniziale);
 	}

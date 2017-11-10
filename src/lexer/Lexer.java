@@ -10,7 +10,7 @@ import it.gandinolorenzo.lft.Automa;
 import it.gandinolorenzo.lft.Stato;
 import it.gandinolorenzo.lft.Stato.Pair;
 
-public class Lexer {
+public abstract class Lexer {
 	
 	private boolean eof = false;;
 	public Automa automa;
@@ -24,11 +24,8 @@ public class Lexer {
 	private Queue<Character> buffer = new LinkedList<>();
 	int lineCounter = 0;
 	
-	public Lexer(Automa automa, BufferedReader br) {
-		this.automa = automa;
+	public Lexer(BufferedReader br) {
 		this.br = br;
-		if(automa != null)
-			this.stati.add(automa.iniziale);
 	}
 	
 	public void updateStringa(char c) {
