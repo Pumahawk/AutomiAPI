@@ -8,7 +8,7 @@ import java.io.StringReader;
 
 import org.junit.jupiter.api.Test;
 
-import lexer.Lexer;
+import lexer.AbstractLexer;
 import lexer.LexerException;
 import lexer.NumberTok;
 import lexer.Tag;
@@ -27,7 +27,7 @@ public class UniLexerTest {
 	public void rapidTest() throws IOException, LexerException {
 		String s = "ciao 120 ";
 		BufferedReader in = new BufferedReader(new StringReader(s));
-		Lexer lexer = new UniLexer(in);
+		AbstractLexer lexer = new UniLexer(in);
 		Token t = lexer.nextToken();
 		assertTrue("Errore lettura primo token",((Word)t).tag == 257 && ((Word)t).lexeme.equals("ciao"));
 		t = lexer.nextToken();

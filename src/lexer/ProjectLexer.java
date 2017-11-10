@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class ProjectLexer {
-	public static void execute(Lexer lexer)  throws FileNotFoundException {
+	public static void execute(AbstractLexer lexer)  throws FileNotFoundException {
     	boolean status = true;
     	LexerException error = null;
     	Token c = new Token(0);

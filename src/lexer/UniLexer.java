@@ -9,7 +9,7 @@ import java.util.Map;
 import it.gandinolorenzo.lft.Automa;
 import it.gandinolorenzo.lft.Stato;
 
-public class UniLexer extends Lexer {
+public class UniLexer extends AbstractLexer {
 
 	private Map<String, Word> keyWords = new HashMap<>();
 	
